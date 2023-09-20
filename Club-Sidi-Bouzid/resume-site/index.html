@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reservation Clud Sidi-Bouzid </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css">
+    <style>
+        /* Additional styling adjustments */
+        .container {
+            margin-top: 40px;
+            max-width: 500px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            margin-top: 20px;
+        }
+        #mealSelection .form-group {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reservation Club Sidi-Bouzid</h1>
+        <form id="reservationForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="employeeId">Employee ID:</label>
+                <input type="text" class="form-control" id="employeeId" required>
+            </div>
+            <div class="form-group">
+                <label for="reservationType">Reservation Type:</label>
+                <select class="form-control" id="reservationType" required>
+                    <option disabled selected>   </option>
+                    <option value="meal">Meal Reservation</option>
+                    <option value="activity">Sports Activity Reservation</option>
+                </select>
+            </div>
+            <div id="mealReservation" class="d-none">
+                <h3>Meal Reservation</h3>
+                <div class="form-group">
+                    <label for="mealTime">Time:</label>
+                    <select class="form-control" id="mealTime" required>
+                        <option disabled selected>Select a time</option>
+                        <option value="lunch">déjeuner</option>
+                        <option value="dinner">dîner </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="numberOfPeople">Number of People:</label>
+                    <input type="number" class="form-control" id="numberOfPeople" required>
+                </div>
+                <div id="mealSelection">
+                    <h4>Meal Selection</h4>
+                    <div class="form-group">
+                        <label for="meal1">Entrée:</label>
+                        <select class="form-control meal" id="meal1">
+                            <option selected>Select a meal</option>
+                            <option value="chicken">Salade mixte</option>
+                            <option value="pasta">Salade Marocaine</option>
+                            <option value="salad">Salade Russe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="meal2">Plat principal:</label>
+                        <select class="form-control meal" id="meal2">
+                            <option selected>Select a meal</option>
+                            <option value="steak">Plat de Boeuf</option>
+                            <option value="fish">Poulet Grillé</option>
+                            <option value="vegetable"> légumes grillés</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="meal2">Dessert:</label>
+                        <select class="form-control meal" id="meal2">
+                            <option selected>Select a meal</option>
+                            <option value="steak">Crème Caramel</option>
+                            <option value="fish">Pana cotta</option>
+                            <option value="vegetable">Plat de Fruits </option>
+                        </select>
+                    </div>
+                </div>
+                
+            </div>
+            <div id="activityReservation" class="d-none">
+                <h3>Sports Activity Reservation</h3>
+                <div class="form-group">
+                    <label for="activityType">Activity Type:</label>
+                    <select class="form-control" id="activityType" required>
+                        <option disabled selected>Select an activity</option>
+                        <option value="pool">Pool Reservation</option>
+                        <option value="basketball">Basketball</option>
+                        <option value="tennis">Tennis</option>
+                    </select>
+                </div>
+                <div id="activityTime" class="d-none">
+                    <label for="reservationDate">Date:</label>
+                    <input type="date" class="form-control" id="reservationDate" required>
+                    <label for="reservationTime">Time:</label>
+                    <input type="time" class="form-control" id="reservationTime" required>
+                </div>
+                <div id="activityTime" class="d-none">
+                    <div id="basketballTime">
+                        <label for="basketballDate">Basketball Date:</label>
+                        <input type="date" class="form-control" id="basketballDate" required>
+                        <label for="basketballTime">Basketball Time:</label>
+                        <input type="time" class="form-control" id="basketballTime" required>
+                    </div>
+                    <div id="tennisTime">
+                        <label for="tennisDate">Tennis Date:</label>
+                        <input type="date" class="form-control" id="tennisDate" required>
+                        <label for="tennisTime">Tennis Time:</label>
+                        <input type="time" class="form-control" id="tennisTime" required>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const reservationform = document.getElementById('reservationForm');
+        const apiEndpoint = 'https://apz5vl017b.execute-api.eu-west-3.amazonaws.com/Prod';
+
+        reservationForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le formulaire de se soumettre normalement
+
+        // Collectez les données du formulaire
+        const name = document.getElementById('name').value;
+        const firstName = document.getElementById('firstName').value;
+        const employeeId = document.getElementById('employeeId').value;
+        const reservationType = document.getElementById('reservationType').value;
+
+        // Créez un objet de données à envoyer
+        const reservationData = {
+            name,
+            firstName,
+            employeeId,
+            reservationType
+        };
+
+        // Effectuez une requête HTTP POST vers l'API Gateway
+        fetch(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Indique que vous envoyez des données JSON
+            },
+            body: JSON.stringify(reservationData) // Convertit l'objet JavaScript en JSON
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Gérez la réponse de votre API (par exemple, affichez un message de confirmation)
+            console.log('API Response:', data);
+        })
+        .catch(error => {
+            // Gérez les erreurs (par exemple, affichez un message d'erreur)
+            console.error('API Error:', error);
+        });
+
+        // Réinitialisez le formulaire
+        this.reset();
+        })
+        const reservationTypeSelect = document.getElementById('reservationType');
+        const mealReservationSection = document.getElementById('mealReservation');
+        const activityReservationSection = document.getElementById('activityReservation');
+
+        reservationTypeSelect.addEventListener('change', function() {
+            if (this.value === 'meal') {
+                mealReservationSection.classList.remove('d-none');
+                activityReservationSection.classList.add('d-none');
+            } else if (this.value === 'activity') {
+                mealReservationSection.classList.add('d-none');
+                activityReservationSection.classList.remove('d-none');
+            } else {
+                mealReservationSection.classList.add('d-none');
+                activityReservationSection.classList.add('d-none');
+            }
+        });
+
+        const activityTypeSelect = document.getElementById('activityType');
+        const activityTimeSection = document.getElementById('activityTime');
+
+        activityTypeSelect.addEventListener('change', function() {
+            if (this.value === 'pool') {
+                activityTimeSection.classList.remove('d-none');
+            } else {
+                activityTimeSection.classList.add('d-none');
+            }
+        });
+
+        const mealInputs = document.getElementsByClassName('meal');
+        for (let i = 0; i < mealInputs.length; i++) {
+             const mealOptions = mealInputs[i].getElementsByTagName('option');
+             mealOptions[0].selected = true; // Select the "Select a meal" option
+        }
+
+
+        const reservationForm = document.getElementById('reservationForm');
+
+        reservationForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const name = document.getElementById('name').value;
+            const firstName = document.getElementById('firstName').value;
+            const employeeId = document.getElementById('employeeId').value;
+            const reservationType = document.getElementById('reservationType').value;
+            
+            if (reservationType === 'meal') {
+                const mealTime = document.getElementById('mealTime').value;
+                const numberOfPeople = document.getElementById('numberOfPeople').value;
+                const meals = [];
+                const mealInputs = document.getElementsByClassName('meal');
+                for (let i = 0; i < mealInputs.length; i++) {
+                    const selectedOption = mealInputs[i].options[mealInputs[i].selectedIndex];
+                    meals.push(selectedOption.text);
+                }
+
+                console.log('Meal Reservation Data:', {
+                    name,
+                    firstName,
+                    employeeId,
+                    reservationType,
+                    mealTime,
+                    numberOfPeople,
+                    meals
+                });
+            } else if (reservationType === 'activity') {
+                const activityType = document.getElementById('activityType').value;
+                let reservationDate = null;
+                let reservationTime = null;
+
+                if (activityType === 'pool') {
+                    reservationDate = document.getElementById('reservationDate').value;
+                    reservationTime = document.getElementById('reservationTime').value;
+                }
+
+                console.log('Sports Activity Reservation Data:', {
+                    name,
+                    firstName,
+                    employeeId,
+                    reservationType,
+                    activityType,
+                    reservationDate,
+                    reservationTime
+                });
+            }
+
+            this.reset();
+        });
+    </script>
+</body>
+</html>
