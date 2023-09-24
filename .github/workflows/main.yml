@@ -17,7 +17,7 @@ jobs:
       - name: Run tests
         run: |
           cd Club-Sidi-Bouzid/resume-site
-          unittest -v Club-Sidi-Bouzid/resume-site/index.html
+          python -m unittest Club-Sidi-Bouzid/resume-site/index.html
           cd ../../
 
   build-and-deploy-infra:
