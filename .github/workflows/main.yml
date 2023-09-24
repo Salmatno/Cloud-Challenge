@@ -2,41 +2,6 @@ name: main
 on: push
 
 jobs:
-  test-infra:
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.x  # Replace with your desired Python version
-
-      - name: Run tests
-        run: |
-          cd Club-Sidi-Bouzid/resume-site
-          python -m pytest Club-Sidi-Bouzid/resume-site/index.html
-          cd ../../
-
-  build-and-deploy-infra:
-    needs: test-infra
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - uses: aws-actions/setup-sam@v1
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-3                                                                                        
-      - run: sam build
-        working-directory: Club-Sidi-Bouzid
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-        working-directory: Club-Sidi-Bouzid
-
   deploy-site:
     runs-on: ubuntu-latest
     steps:
