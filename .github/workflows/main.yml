@@ -8,8 +8,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2.1.3
-      - name: index.html
-        run: cd Club-Sidi-Bouzid/resume-site/index.html && pytest -v ./ && cd ../../
+      - name: test index.html
+        run: cd Club-Sidi-Bouzid/resume-site && pytest -v  Club-Sidi-Bouzid/resume-site/index.html && cd ../../
 
   build-and-deploy-infra:
     needs: test-infra
