@@ -17,7 +17,6 @@ jobs:
           aws-region: eu-west-3
       - run:  aws s3 ls s3://salma-tanaoui-website
       - run : cd Club-Sidi-Bouzid
-      - run : cd template.yaml
       - run : sam build
   
 
