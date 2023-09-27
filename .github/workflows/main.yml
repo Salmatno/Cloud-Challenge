@@ -32,8 +32,7 @@ jobs:
            aws-region: eu-west-3
       - run: sam build
         working-directory: Club-Sidi-Bouzid
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-        working-directory: Club-Sidi-Bouzid
+      
   
 
 
