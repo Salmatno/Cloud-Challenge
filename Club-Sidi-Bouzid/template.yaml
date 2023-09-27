@@ -15,10 +15,6 @@ Globals:
     TracingEnabled: true
 
 Parameters:
-  pythonExecutable:
-    Type: String
-    Description: The path to the Python 3.9 interpreter.
-
   HostedZoneParameter:
     Type: String
     Description: The hosted zone for the Route53 records
@@ -140,7 +136,6 @@ Resources:
       CodeUri: hello_world/
       Handler: app.lambda_handler
       Runtime: python3.9
-      PythonExecutable: !Ref pythonExecutable
       Architectures:
       - x86_64
       Events:
