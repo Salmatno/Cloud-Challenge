@@ -32,7 +32,8 @@ jobs:
            aws-region: eu-west-3
       - run: sam build
         working-directory: Club-Sidi-Bouzid
-      
+      - run : sam deploy
+        working-directory: Club-Sidi-Bouzid
   
 
 
